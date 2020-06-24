@@ -76,9 +76,8 @@ class InlineBackend(InlineBackendConfig):
             select_figure_formats(self.shell, self.figure_formats, **self.print_figure_kwargs)
 
     def _figure_formats_changed(self, name, old, new):
-        if 'jpg' in new or 'jpeg' in new:
-            if not pil_available():
-                raise TraitError("Requires PIL/Pillow for JPG figures")
+        if ('jpg' in new or 'jpeg' in new) and not pil_available():
+            raise TraitError("Requires PIL/Pillow for JPG figures")
         self._update_figure_formatters()
 
     figure_format = Unicode(config=True, help="""The figure format to enable (deprecated

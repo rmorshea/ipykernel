@@ -76,8 +76,7 @@ class ZMQDisplayPublisher(DisplayPublisher):
         if metadata is None:
             metadata = {}
         self._validate_data(data, metadata)
-        content = {}
-        content['data'] = encode_images(data)
+        content = {'data': encode_images(data)}
         content['metadata'] = metadata
         self.session.send(
             self.pub_socket, u'display_data', json_clean(content),

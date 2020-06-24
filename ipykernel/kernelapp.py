@@ -169,7 +169,7 @@ class IPKernelApp(BaseIPythonApplication, InteractiveShellApp,
                 port = 1
                 path = "%s-%i" % (self.ip, port)
                 while os.path.exists(path):
-                    port = port + 1
+                    port += 1
                     path = "%s-%i" % (self.ip, port)
             else:
                 path = "%s-%i" % (self.ip, port)
@@ -280,10 +280,10 @@ class IPKernelApp(BaseIPythonApplication, InteractiveShellApp,
         """redirects stdout/stderr to devnull if necessary"""
         if self.no_stdout or self.no_stderr:
             blackhole = open(os.devnull, 'w')
-            if self.no_stdout:
-                sys.stdout = sys.__stdout__ = blackhole
-            if self.no_stderr:
-                sys.stderr = sys.__stderr__ = blackhole
+        if self.no_stdout:
+            sys.stdout = sys.__stdout__ = blackhole
+        if self.no_stderr:
+            sys.stderr = sys.__stderr__ = blackhole
 
     def init_io(self):
         """Redirect input streams and set a display hook."""

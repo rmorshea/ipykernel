@@ -122,9 +122,9 @@ class OutStream(object):
 
     def _flush_from_subprocesses(self):
         """flush possible pub data from subprocesses into my buffer"""
-        if not self._pipe_flag or not self._is_master_process():
+        if not (self._pipe_flag and self._is_master_process()):
             return
-        for i in range(self._subprocess_flush_limit):
+        for _ in range(self._subprocess_flush_limit):
             if self._pipe_poller.poll(0):
                 msg = self._pipe_in.recv_multipart()
                 if msg[0] != self._pipe_uuid:

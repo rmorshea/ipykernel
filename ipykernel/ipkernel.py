@@ -261,17 +261,17 @@ class IPythonKernel(KernelBase):
 
     def do_history(self, hist_access_type, output, raw, session=None, start=None,
                    stop=None, n=None, pattern=None, unique=False):
-        if hist_access_type == 'tail':
-            hist = self.shell.history_manager.get_tail(n, raw=raw, output=output,
-                                                            include_latest=True)
-
-        elif hist_access_type == 'range':
+        if hist_access_type == 'range':
             hist = self.shell.history_manager.get_range(session, start, stop,
                                                         raw=raw, output=output)
 
         elif hist_access_type == 'search':
             hist = self.shell.history_manager.search(
                 pattern, raw=raw, output=output, n=n, unique=unique)
+        elif hist_access_type == 'tail':
+            hist = self.shell.history_manager.get_tail(n, raw=raw, output=output,
+                                                            include_latest=True)
+
         else:
             hist = []
 

@@ -192,17 +192,9 @@ class CannedFunction(CannedObject):
     def __init__(self, f):
         self._check_type(f)
         self.code = f.__code__
-        if f.__defaults__:
-            self.defaults = [ can(fd) for fd in f.__defaults__ ]
-        else:
-            self.defaults = None
-        
+        self.defaults = [ can(fd) for fd in f.__defaults__ ] if f.__defaults__ else None
         closure = py3compat.get_closure(f)
-        if closure:
-            self.closure = tuple( can(cell) for cell in closure )
-        else:
-            self.closure = None
-        
+        self.closure = tuple( can(cell) for cell in closure ) if closure else None
         self.module = f.__module__ or '__main__'
         self.__name__ = f.__name__
         self.buffers = []
@@ -226,8 +218,7 @@ class CannedFunction(CannedObject):
             closure = tuple(uncan(cell, g) for cell in self.closure)
         else:
             closure = None
-        newFunc = FunctionType(self.code, g, self.__name__, defaults, closure)
-        return newFunc
+        return FunctionType(self.code, g, self.__name__, defaults, closure)
 
 class CannedClass(CannedObject):
 
@@ -239,11 +230,7 @@ class CannedClass(CannedObject):
         for k,v in cls.__dict__.items():
             if k not in ('__weakref__', '__dict__'):
                 self._canned_dict[k] = can(v)
-        if self.old_style:
-            mro = []
-        else:
-            mro = cls.mro()
-        
+        mro = [] if self.old_style else cls.mro()
         self.parents = [ can(c) for c in mro[1:] ]
         self.buffers = []
 
@@ -332,10 +319,7 @@ def istype(obj, check):
     This won't catch subclasses.
     """
     if isinstance(check, tuple):
-        for cls in check:
-            if type(obj) is cls:
-                return True
-        return False
+        return any(type(obj) is cls for cls in check)
     else:
         return type(obj) is check
 

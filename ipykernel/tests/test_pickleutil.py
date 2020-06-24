@@ -18,8 +18,7 @@ def loads(obj):
 def test_no_closure():
     @interactive
     def foo():
-        a = 5
-        return a
+        return 5
     
     pfoo = dumps(foo)
     bar = loads(pfoo)
@@ -30,8 +29,7 @@ def test_generator_closure():
     @interactive
     def foo():
         i = 'i'
-        r = [ i for j in (1,2) ]
-        return r
+        return [ i for j in (1,2) ]
     
     pfoo = dumps(foo)
     bar = loads(pfoo)

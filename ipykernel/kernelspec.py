@@ -40,10 +40,7 @@ def make_ipkernel_cmd(mod='ipykernel', executable=None, extra_arguments=[], **kw
     """
     if executable is None:
         executable = sys.executable
-    arguments = [ executable, '-m', mod, '-f', '{connection_file}' ]
-    arguments.extend(extra_arguments)
-
-    return arguments
+    return [executable, '-m', mod, '-f', '{connection_file}', *extra_arguments]
 
 
 def get_kernel_dict():
